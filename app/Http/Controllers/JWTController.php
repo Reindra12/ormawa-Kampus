@@ -34,7 +34,9 @@ class JWTController extends Controller
         ]);
 
         if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            // return response()->json($validator->messages()->all(), 400);
+            $messageError = $validator->messages()->all();
+            return $this-> respondIncorretRegister($messageError);
         }
 
         $user = User::create([
@@ -43,9 +45,14 @@ class JWTController extends Controller
                 'password' => Hash::make($request->password)
             ]);
 
+            $token = auth()->attempt($validator->validated());
+            $responsedata = $user;
+            $responsedata['token'] = $token;
         return response()->json([
+            'status' => true,
             'message' => 'User successfully registered',
-            'user' => $user
+            'errors' => null,
+            'data' => $responsedata
         ], 201);
     }
 
@@ -67,7 +74,8 @@ class JWTController extends Controller
 
         if (!$token = auth()->attempt($validator->validated())) {
             // return response()->json(['error' => 'Unauthorized'], 401);
-            return $this-> respondIncorret();
+            $messageError = 'No account detection';
+            return $this-> respondIncorret($messageError);
         }
 
         return $this->respondWithToken($token);
@@ -127,12 +135,23 @@ class JWTController extends Controller
         ]);
     }
 
-    protected function respondIncorret(){
-        $responseError['key'] = 'Email and password incorret';
+    protected function respondIncorretRegister($messageError){
+        
         return response()->json([
             'status' => false,
-            'message' => 'Email and password incorret',
-            'errors' => $responseError,
+            'message' => '$messageError',
+            'errors' => $messageError[0],
+            // 'errors' => 'Failed to process request'
+        ],401);
+    }
+
+
+    protected function respondIncorret($messageError){
+        
+        return response()->json([
+            'status' => false,
+            'message' => '$messageError',
+            'errors' => $messageError,
             // 'errors' => 'Failed to process request'
         ],401);
     }
