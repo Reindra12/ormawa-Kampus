@@ -28,3 +28,14 @@
     
  
     }
+
+    function getCategories(){
+        $query = DB::table('categories')->get(); 
+        return response()->json([
+            'status' => true,
+            'message' => 'OK!',
+            'errors' => null,
+            'data' => $query,
+        ]);
+    
+    }
