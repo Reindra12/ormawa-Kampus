@@ -1,3 +1,15 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Models\Categories;
+use Illuminate\Http\Request;
+use Validator;
+use Illuminate\Support\Facades\DB;
+
+class CategoriesImageController extends Controller
+{
       function uploadimage(Request $request)
     {
         // $image = $request->file('image');
@@ -39,3 +51,5 @@
         ]);
     
     }
+}
+
