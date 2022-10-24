@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 class CategoriesImageController extends Controller
 {
+
+    
       function uploadimage(Request $request)
     {
         // $image = $request->file('image');
@@ -20,7 +22,7 @@ class CategoriesImageController extends Controller
  
         $name = $request->file('image')->getClientOriginalName();
  
-        $path = $request->file('image')->store('');
+        $path = $request->file('image')->store('/assets/images/categories');
         $image = $request->file('image')->move(public_path('/assets/images/categories'),$name);
  
  

@@ -22,13 +22,13 @@ Route::group(['middleware' => 'api'], function($router) {
     Route::post('/logout', [JWTController::class, 'logout']);
     Route::post('/refresh', [JWTController::class, 'refresh']);
     Route::post('/profile', [JWTController::class, 'profile']);
-   
+    Route::get('/getcategories', [CategoriesImageController::class, 'getCategories']);
 });
 
 Route::post('multiple-image-upload', [MultipleUploadController::class, 'uploadMultiple']);
 Route::post('images', [MultipleUploadController::class, 'store']);
 Route::post('uploadimage', [CategoriesImageController::class, 'uploadimage']);
-Route::get('getcategories', [CategoriesImageController::class, 'getCategories']);
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
