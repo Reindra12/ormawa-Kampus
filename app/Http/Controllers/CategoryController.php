@@ -49,7 +49,6 @@ class CategoryController extends Controller
     
     
            $save = new Category;
-    
            $save->name = $name;
            $save->image = $image;
     
@@ -77,10 +76,35 @@ class CategoryController extends Controller
                 'message' => 'OK!',
                 'errors' => null,
                 'data' => $query,
-            ]);
+            ],200);
         
         }
     
+
+        public function showEvent($id){
+            $category[] = Category::join('events', 'categories.id_category', '=', 'events.category_id')
+           
+            ->select(
+                'categories.id_category',
+                'categories.name',
+                'categories.image',
+                'categories.name',
+               
+            )
+            ->where('categories.id_category', $id)
+            ->first();
+            
+
+            return response()->json([
+                'status' => true,
+                'message' => 'OK!',
+                'errors' => null,
+                'data' => $category
+            ]);
+
+            // $data = json_decode($category, true);
+            // return $data;
+        }
 
     /**
      * Show the form for editing the specified resource.
