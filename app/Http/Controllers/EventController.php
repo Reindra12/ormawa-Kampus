@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 class EventController extends Controller
 {
     /**
@@ -44,7 +46,7 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function showEvent()
+    public function events()
     {
         $event = Event::all();
         return response()->json([
@@ -53,6 +55,17 @@ class EventController extends Controller
             'errors' => null,
             'data' => $event,
         ]);
+    }
+
+    
+    public function eventByIdCategory($id){
+            $event = Event::where('category_id',$id)->get();
+            return response()->json([
+                'status' => true,
+                'message' => 'OK!',
+                'errors' => null,
+                'data' => $event,
+            ]);  
     }
 
     /**
