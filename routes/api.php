@@ -4,7 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JWTController;
 use App\Http\Controllers\MultipleUploadController;
-use App\Http\Controllers\CategoriesImageController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,12 +23,16 @@ Route::group(['middleware' => 'api'], function($router) {
     Route::post('/logout', [JWTController::class, 'logout']);
     Route::post('/refresh', [JWTController::class, 'refresh']);
     Route::post('/profile', [JWTController::class, 'profile']);
-    Route::get('/getcategories', [CategoriesImageController::class, 'getCategories']);
+    Route::get('/getcategories', [CategoryController::class, 'getCategories']);
+    Route::post('/createcategory', [CategoryController::class, 'createCategory']);
+    Route::get('/getevent', [EventController::class, 'showEvent']);
+   
 });
 
 Route::post('multiple-image-upload', [MultipleUploadController::class, 'uploadMultiple']);
 Route::post('images', [MultipleUploadController::class, 'store']);
-Route::post('uploadimage', [CategoriesImageController::class, 'uploadimage']);
+
+Route::get('/getEvent/{id}', [CategoriesImageController::class, 'event']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
