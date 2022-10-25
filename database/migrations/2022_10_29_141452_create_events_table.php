@@ -14,7 +14,7 @@ class CreateEventsTable extends Migration
     public function up()
     {
         Schema::create('events', function (Blueprint $table) {
-            $table->increments('id_event', true);
+            $table->increments('id_event', true)->autoIncrement();
             $table->string('name');
             $table->string('desc');
             $table->string('image');
@@ -25,6 +25,7 @@ class CreateEventsTable extends Migration
             //restrict = agar id yg sudah terisi tidak boleh di hapus
         });
 
+    }
 
     /**
      * Reverse the migrations.

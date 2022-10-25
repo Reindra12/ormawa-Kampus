@@ -23,11 +23,27 @@ Route::group(['middleware' => 'api'], function($router) {
     Route::post('/logout', [JWTController::class, 'logout']);
     Route::post('/refresh', [JWTController::class, 'refresh']);
     Route::post('/profile', [JWTController::class, 'profile']);
-    Route::get('/getcategories', [CategoryController::class, 'getCategories']);
-    Route::post('/createcategory', [CategoryController::class, 'createCategory']);
-    Route::get('/getevent', [EventController::class, 'showEvent']);
+
+    
+  
    
 });
+
+
+
+//event
+Route::get('eventbyidcategory/{id}', [EventController::class, 'eventByIdCategory']);
+Route::get('/events', [EventController::class, 'events']);
+
+
+
+//category
+Route::get('/showevent/{id}', [CategoryController::class, 'showEvent']);
+Route::get('/getcategories', [CategoryController::class, 'getCategories']);
+Route::post('/createcategory', [CategoryController::class, 'createCategory']);
+
+
+
 
 Route::post('multiple-image-upload', [MultipleUploadController::class, 'uploadMultiple']);
 Route::post('images', [MultipleUploadController::class, 'store']);
