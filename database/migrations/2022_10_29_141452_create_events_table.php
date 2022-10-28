@@ -20,7 +20,7 @@ class CreateEventsTable extends Migration
             $table->string('image');
             $table->date('date', $precision = 0);
             $table->timeTz('time', $precision = 0);
-            $table->bigInteger('category_id')->unsigned()->index(); // this is working
+            $table->integer('category_id') ; // this is working
             $table->foreign('category_id')->references('id_category')->on('categories')->onDelete('cascade');
             //restrict = agar id yg sudah terisi tidak boleh di hapus
         });
