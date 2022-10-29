@@ -6,6 +6,8 @@ use App\Http\Controllers\JWTController;
 use App\Http\Controllers\MultipleUploadController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\OrmawaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,13 +26,15 @@ Route::group(['middleware' => 'api'], function($router) {
     Route::post('/refresh', [JWTController::class, 'refresh']);
     Route::post('/profile', [JWTController::class, 'profile']);
 
-    
-  
    
 });
 
 
+//kegiatan
+Route::resource('kegiatan', KegiatanController::class)->middleware('jwtmiddleware');
 
+
+Route::resource('ormawa', OrmawaController::class)->middleware('jwtmiddleware');
 //event
 Route::get('eventbyidcategory/{id}', [EventController::class, 'eventByIdCategory']);
 Route::get('/events', [EventController::class, 'events']);

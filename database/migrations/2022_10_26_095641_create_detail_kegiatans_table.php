@@ -14,7 +14,7 @@ class CreateDetailKegiatansTable extends Migration
     public function up()
     {
         Schema::create('detail_kegiatans', function (Blueprint $table) {
-            $table->integer('id_kegiatan_kegiatan', true)->autoIncrement();
+            $table->integer('id_detail_kegiatan')->autoIncrement();
             $table->integer('id_kegiatan'); // this is working
             $table->foreign('id_kegiatan')->references('id_kegiatan')->on('kegiatans')->onDelete('cascade');
             $table->integer('id_mahasiswa') ; // this is working

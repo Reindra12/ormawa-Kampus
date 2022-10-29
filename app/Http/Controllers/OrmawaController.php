@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Ormawa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class OrmawaController extends Controller
 {
@@ -24,7 +26,8 @@ class OrmawaController extends Controller
      */
     public function create()
     {
-        //
+       
+
     }
 
     /**
@@ -35,7 +38,34 @@ class OrmawaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nama_ormawa' => 'required',
+            'status' => 'required',
+            'user' => 'required',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $message = $validator->errors()->first();
+            return $this-> responseError($message);
+        }
+
+        $nama = Ormawa::where('nama_ormawa',$request->nama_ormawa)->first();
+        if ($nama==NULL){
+            $ormawa = Ormawa::create([
+                'nama_ormawa' => $request->nama_ormawa,
+                'status' => $request->status,
+                'user' => $request->user,
+                'password' => Hash::make($request->password)
+            ]);
+    
+            return $this->responseSuccess($ormawa);
+           
+        }
+        $message = "Nama Ormawa sudah tersedia";
+        return $this-> responseError($message);
+
+       
     }
 
     /**
@@ -46,7 +76,7 @@ class OrmawaController extends Controller
      */
     public function show(Ormawa $ormawa)
     {
-        //
+        
     }
 
     /**
@@ -81,5 +111,25 @@ class OrmawaController extends Controller
     public function destroy(Ormawa $ormawa)
     {
         //
+    }
+
+
+    protected function responseSuccess($ormawa){
+        return response()->json([
+            'status' => true,
+            'message' => 'berhasil',
+            'errors' => null,
+            'data' => $ormawa
+        ], 201);
+    }
+
+    protected function responseError($messageError){
+        
+        return response()->json([
+            'status' => false,
+            'message' => 'Cek kembali data anda',
+            'errors' => $messageError,
+            // 'errors' => 'Failed to process request'
+        ],401);
     }
 }
