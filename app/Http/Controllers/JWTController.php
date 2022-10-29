@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use Validator;
+// use Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class JWTController extends Controller
 {
@@ -139,7 +140,7 @@ class JWTController extends Controller
         
         return response()->json([
             'status' => false,
-            'message' => '$messageError',
+            'message' => 'OK!',
             'errors' => $messageError[0],
             // 'errors' => 'Failed to process request'
         ],401);
@@ -150,7 +151,7 @@ class JWTController extends Controller
         
         return response()->json([
             'status' => false,
-            'message' => '$messageError',
+            'message' => 'OK!',
             'errors' => $messageError,
             // 'errors' => 'Failed to process request'
         ],401);
