@@ -64,7 +64,7 @@ class OrmawaController extends Controller
 
         if ($validator->fails()) {
             $message = $validator->errors()->first();
-            return $this-> responseError($message);
+            return $this-> responseError("",$message);
         }
 
         $nama = Ormawa::where('nama_ormawa',$request->nama_ormawa)->first();
