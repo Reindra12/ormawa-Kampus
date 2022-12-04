@@ -68,7 +68,7 @@ class KegiatanController extends Controller
 
            if ($validator->fails()) {
             $message = $validator->errors()->first();
-            return $this-> responseError($message);
+            return $this-> responseError("",$message);
         }
 
            $name = $request->file('gambar_kegiatan')->getClientOriginalName();
