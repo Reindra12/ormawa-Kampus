@@ -69,6 +69,7 @@ class OrmawaController extends Controller
 
         $nama = Ormawa::where('nama_ormawa',$request->nama_ormawa)->first();
         if ($nama==NULL){
+            $message = "Berhasil menambahkan Ormawa";
             $ormawa = Ormawa::create([
                 'nama_ormawa' => $request->nama_ormawa,
                 'status' => $request->status,
@@ -76,11 +77,11 @@ class OrmawaController extends Controller
                 'password' => Hash::make($request->password)
             ]);
 
-            return $this->responseSuccess($ormawa);
+            return $this->responseSuccess($ormawa, $message);
 
         }
         $message = "Nama Ormawa sudah tersedia";
-        return $this-> responseError($message);
+        return $this-> responseError($nama,$message);
 
 
     }
@@ -131,21 +132,21 @@ class OrmawaController extends Controller
     }
 
 
-    protected function responseSuccess($ormawa){
+    protected function responseSuccess($data, $message){
         return response()->json([
             'status' => true,
-            'message' => 'berhasil',
+            'message' => $message,
             'errors' => null,
-            'data' => $ormawa
+            'data' => $data
         ], 201);
     }
 
-    protected function responseError($messageError){
-
+    protected function responseError($data,$messageError){
         return response()->json([
             'status' => false,
-            'message' => 'Cek kembali data anda',
-            'errors' => $messageError,
+            'message' => $messageError,
+            'errors' => $data,
+            'data'=> $data
             // 'errors' => 'Failed to process request'
         ],401);
     }

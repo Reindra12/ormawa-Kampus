@@ -38,9 +38,10 @@ Route::resource('/kegiatan', KegiatanController::class)->middleware('jwtmiddlewa
 Route::resource('/jenis_kegiatan', JenisKegiatanController::class)->middleware('jwtmiddleware');
 Route::resource('/ormawa', OrmawaController::class)->middleware('jwtmiddleware');
 Route::resource('/detail_jenis_kegiatan', DetailJenisKegiatanController::class)->middleware('jwtmiddleware');
+Route::get('/search/{nama}',[KegiatanController::class,'searchKegiatan']);
 // jurusan
-Route::resou('/jurusan', JurusanController::class)->middleware('jwtmiddleware');
-Route::resource('/ormawa', JurusanController::class)->middleware('jwtmiddleware');
+
+Route::resource('/jurusan', JurusanController::class)->middleware('jwtmiddleware');
 
 // event
 Route::get('eventbyidcategory/{id}', [EventController::class, 'eventByIdCategory']);

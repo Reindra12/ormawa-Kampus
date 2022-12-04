@@ -128,7 +128,7 @@ class JWTController extends Controller
         return response()->json([
             // 'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+            'expires_in' => auth()->factory()->getTTL() * 1,
             'status' => true,
             'message' => 'OK!',
             'errors' => null,
@@ -137,7 +137,7 @@ class JWTController extends Controller
     }
 
     protected function respondIncorretRegister($messageError){
-        
+
         return response()->json([
             'status' => false,
             'message' => 'OK!',
@@ -148,7 +148,7 @@ class JWTController extends Controller
 
 
     protected function respondIncorret($messageError){
-        
+
         return response()->json([
             'status' => false,
             'message' => 'OK!',

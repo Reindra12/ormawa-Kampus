@@ -100,14 +100,8 @@ class KegiatanController extends Controller
 
            $save->save();
 
-           return response()->json([
-               'status' => true,
-               'message' => 'OK!',
-               'errors' => null,
-               'data'=> $save
-
-           ],200);
-
+           $message = "Data berhasil ditambahkan";
+           return $this->responseSuccess($save, $message);
 
     }
 
@@ -157,22 +151,35 @@ class KegiatanController extends Controller
     }
 
 
-    protected function responseSuccess($ormawa){
+    protected function responseSuccess($data, $message){
         return response()->json([
             'status' => true,
-            'message' => 'berhasil',
+            'message' => $message,
             'errors' => null,
-            'data' => $ormawa
+            'data' => $data
         ], 201);
     }
 
-    protected function responseError($messageError){
-
+    protected function responseError($data,$messageError){
         return response()->json([
             'status' => false,
-            'message' => 'Cek kembali data anda',
-            'errors' => $messageError,
+            'message' => $messageError,
+            'errors' => true,
+            'data'=> $data
             // 'errors' => 'Failed to process request'
         ],401);
+    }
+
+
+ function searchKegiatan($nama_kegiatan){
+        $kegiatan = Kegiatan::where('nama_kegiatan','like',"%".$nama_kegiatan."%")->get();
+        if($kegiatan==NULL){
+            $message = "Data tidak ditemukan";
+            return $this->responseError($kegiatan, $message);
+
+        }else{
+            $message = "Data tidak ditemukan";
+            return $this->responseError($kegiatan, $message);
+        }
     }
 }
