@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Event;
+use App\Models\jurusan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
-class EventController extends Controller
+
+class JurusanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +14,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+        // $jurusan = jurusan::orderBy('nama_jurusan', 'DESC')->get();
+        return response()->json("jurusan", 200);
     }
 
     /**
@@ -43,38 +42,21 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Event  $event
+     * @param  \App\Models\jurusan  $jurusan
      * @return \Illuminate\Http\Response
      */
-    public function events()
+    public function show(jurusan $jurusan)
     {
-        $event = Event::all();
-        return response()->json([
-            'status' => true,
-            'message' => 'OK!',
-            'errors' => null,
-            'data' => $event,
-        ]);
-    }
-
-
-    public function eventByIdCategory($id){
-            $event = Event::where('category_id',$id)->get();
-            return response()->json([
-                'status' => true,
-                'message' => 'OK!',
-                'errors' => null,
-                'data' => $event,
-            ]);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Event  $event
+     * @param  \App\Models\jurusan  $jurusan
      * @return \Illuminate\Http\Response
      */
-    public function edit(Event $event)
+    public function edit(jurusan $jurusan)
     {
         //
     }
@@ -83,10 +65,10 @@ class EventController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Event  $event
+     * @param  \App\Models\jurusan  $jurusan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Event $event)
+    public function update(Request $request, jurusan $jurusan)
     {
         //
     }
@@ -94,10 +76,10 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Event  $event
+     * @param  \App\Models\jurusan  $jurusan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Event $event)
+    public function destroy(jurusan $jurusan)
     {
         //
     }

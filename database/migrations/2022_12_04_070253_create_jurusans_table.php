@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddGambarJenisKegiatanToJenisKegiatansTable extends Migration
+class CreateJurusansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddGambarJenisKegiatanToJenisKegiatansTable extends Migration
      */
     public function up()
     {
-        Schema::table('jenis_kegiatans', function (Blueprint $table) {
-            //
+        Schema::create('jurusans', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama_jurusan');
+            $table->enum('status',['y','t']);
+            // $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddGambarJenisKegiatanToJenisKegiatansTable extends Migration
      */
     public function down()
     {
-        Schema::table('jenis_kegiatans', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('jurusans');
     }
 }

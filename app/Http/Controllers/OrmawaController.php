@@ -6,6 +6,7 @@ use App\Models\Ormawa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Response as HttpResponse;
 
 class OrmawaController extends Controller
 {
@@ -16,7 +17,23 @@ class OrmawaController extends Controller
      */
     public function index()
     {
-        //
+        $ormawa = Ormawa::orderBy('nama_ormawa','DESC')->get()->map(function($orma){
+            return [
+                    'id' => $orma->id_ormawa,
+                   'nama' => $orma->nama_ormawa,
+
+            ];
+        });
+        $response = [
+            'status'=> 'success',
+            'message' => 'List Ormawa order by Nama Ormawa',
+            'error' => null,
+            'data' => $ormawa
+        ];
+
+        return response()->json($response, HttpResponse::HTTP_OK);
+
+
     }
 
     /**
@@ -26,7 +43,7 @@ class OrmawaController extends Controller
      */
     public function create()
     {
-       
+
 
     }
 
@@ -58,14 +75,14 @@ class OrmawaController extends Controller
                 'user' => $request->user,
                 'password' => Hash::make($request->password)
             ]);
-    
+
             return $this->responseSuccess($ormawa);
-           
+
         }
         $message = "Nama Ormawa sudah tersedia";
         return $this-> responseError($message);
 
-       
+
     }
 
     /**
@@ -76,7 +93,7 @@ class OrmawaController extends Controller
      */
     public function show(Ormawa $ormawa)
     {
-        
+
     }
 
     /**
@@ -124,7 +141,7 @@ class OrmawaController extends Controller
     }
 
     protected function responseError($messageError){
-        
+
         return response()->json([
             'status' => false,
             'message' => 'Cek kembali data anda',

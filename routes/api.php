@@ -5,7 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JWTController;
 use App\Http\Controllers\MultipleUploadController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DetailJenisKegiatanController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\JenisKegiatanController;
+use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\OrmawaController;
 
@@ -26,16 +29,20 @@ Route::group(['middleware' => 'api'], function($router) {
     Route::post('/refresh', [JWTController::class, 'refresh']);
     Route::post('/profile', [JWTController::class, 'profile']);
 
-   
+
 });
 
 
-//kegiatan
-Route::resource('kegiatan', KegiatanController::class)->middleware('jwtmiddleware');
+// kegiatan
+Route::resource('/kegiatan', KegiatanController::class)->middleware('jwtmiddleware');
+Route::resource('/jenis_kegiatan', JenisKegiatanController::class)->middleware('jwtmiddleware');
+Route::resource('/ormawa', OrmawaController::class)->middleware('jwtmiddleware');
+Route::resource('/detail_jenis_kegiatan', DetailJenisKegiatanController::class)->middleware('jwtmiddleware');
+// jurusan
+Route::resou('/jurusan', JurusanController::class)->middleware('jwtmiddleware');
+Route::resource('/ormawa', JurusanController::class)->middleware('jwtmiddleware');
 
-
-Route::resource('ormawa', OrmawaController::class)->middleware('jwtmiddleware');
-//event
+// event
 Route::get('eventbyidcategory/{id}', [EventController::class, 'eventByIdCategory']);
 Route::get('/events', [EventController::class, 'events']);
 
@@ -52,7 +59,7 @@ Route::post('/createcategory', [CategoryController::class, 'createCategory']);
 Route::post('multiple-image-upload', [MultipleUploadController::class, 'uploadMultiple']);
 Route::post('images', [MultipleUploadController::class, 'store']);
 
-Route::get('/getEvent/{id}', [CategoriesImageController::class, 'event']);
+// Route::get('/getEvent/{id}', [CategoriesImageController::class, 'event']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

@@ -6,6 +6,8 @@ use App\Models\Kegiatan;
 use App\Models\Ormawa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Response as HttpResponse;
+
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -18,7 +20,22 @@ class KegiatanController extends Controller
      */
     public function index()
     {
-        //
+        $kegiatan = kegiatan::orderBy('nama_kegiatan','DESC')->get()->map(function($kegiatan){
+            return [
+                    'id' => $kegiatan->id_kegiatan,
+                   'nama_kegiatan' => $kegiatan->nama_kegiatan,
+
+            ];
+        });
+        $response = [
+            'status'=> 'success',
+            'message' => 'List kegiatan order by Nama kegiatan',
+            'error' => null,
+            'data' => $kegiatan
+        ];
+
+        return response()->json($response, HttpResponse::HTTP_OK);
+
     }
 
     /**
@@ -27,7 +44,7 @@ class KegiatanController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function createCategory(Request $request){
-       
+
         //
     }
 
@@ -46,20 +63,20 @@ class KegiatanController extends Controller
             'tgl_kegiatan' => 'required',
             'jam_kegiatan' => 'required',
             'id_ormawa' => 'required'
-    
+
            ]);
 
            if ($validator->fails()) {
             $message = $validator->errors()->first();
             return $this-> responseError($message);
         }
-    
+
            $name = $request->file('gambar_kegiatan')->getClientOriginalName();
-    
+
            $image = $request->file('gambar_kegiatan')->store('/assets/images/categories');
            $path = $request->file('gambar_kegiatan')->move(public_path('/assets/images/categories'),$name);
-    
-    
+
+
 
            $id_ormawa = Ormawa::where('id_ormawa',$request->id_ormawa)->first();
            if ($id_ormawa ==NULL){
@@ -67,11 +84,11 @@ class KegiatanController extends Controller
                 'status' => true,
                 'message' => 'OK!',
                 'errors' => "id ormawa tidak ditemukan",
-                // 'data'=> $validatedData  
-                
+                // 'data'=> $validatedData
+
             ],404);
            }
-           
+
            $save = new Kegiatan;
            $save->nama_kegiatan = $request->nama_kegiatan;
            $save->gambar_kegiatan = $image;
@@ -79,19 +96,19 @@ class KegiatanController extends Controller
            $save->tgl_kegiatan = $request->tgl_kegiatan;
            $save->jam_kegiatan = $request->jam_kegiatan;
            $save->id_ormawa = $request->id_ormawa;
-           
-           
+
+
            $save->save();
-    
+
            return response()->json([
                'status' => true,
                'message' => 'OK!',
                'errors' => null,
-               'data'=> $save  
-               
+               'data'=> $save
+
            ],200);
-    
-        
+
+
     }
 
     /**
@@ -150,7 +167,7 @@ class KegiatanController extends Controller
     }
 
     protected function responseError($messageError){
-        
+
         return response()->json([
             'status' => false,
             'message' => 'Cek kembali data anda',
