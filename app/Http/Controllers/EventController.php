@@ -57,7 +57,7 @@ class EventController extends Controller
         ]);
     }
 
-    
+
     public function eventByIdCategory($id){
             $event = Event::where('category_id',$id)->get();
             return response()->json([
@@ -65,7 +65,7 @@ class EventController extends Controller
                 'message' => 'OK!',
                 'errors' => null,
                 'data' => $event,
-            ]);  
+            ]);
     }
 
     /**

@@ -14,8 +14,9 @@ class CreateJenisKegiatansTable extends Migration
     public function up()
     {
         Schema::create('jenis_kegiatans', function (Blueprint $table) {
-            $table->integer('id_jenis_kegiatan', true)->autoIncrement();
+            $table->integer('id_jenis_kegiatan')->autoIncrement();
             $table->string('nama_jenis_kegiatan', 45);
+            $table->string('gambar_jenis_kegiatan');
             $table->enum('status', ['y', 't']);
         });
     }
