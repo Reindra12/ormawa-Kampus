@@ -61,7 +61,7 @@ class JenisKegiatanController extends Controller
 
         if($validator->fails()){
             $message = $validator->errors()->first();
-            return $this-> responseError($message);
+            return $this-> responseError("",$message);
         }
 
         // $namagambar = $request->file('jenis_kegiatan');
@@ -133,13 +133,24 @@ class JenisKegiatanController extends Controller
         //
     }
 
-    // protected function responseError($messageError){
 
-    //     return response()->json([
-    //         'status' => false,
-    //         'message' => 'Cek kembali data anda',
-    //         'errors' => $messageError,
-    //         // 'errors' => 'Failed to process request'
-    //     ],401);
-    // }
+    protected function responseSuccess($data, $message){
+        return response()->json([
+            'status' => true,
+            'message' => $message,
+            'errors' => null,
+            'data' => $data
+
+        ], 201);
+    }
+
+    protected function responseError($data,$messageError){
+        return response()->json([
+            'status' => false,
+            'message' => $messageError,
+            'errors' => true,
+            'data'=> $data
+            // 'errors' => 'Failed to process request'
+        ],401);
+    }
 }

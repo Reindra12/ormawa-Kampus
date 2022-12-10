@@ -21,7 +21,7 @@ class CreateKegiatansTable extends Migration
             $table->date('tgl_kegiatan');
             $table->timeTz('jam_kegiatan');
             $table->integer('id_ormawa');
-            $table->foreign('id_ormawa')->references('id_ormawa')->on('ormawas')->onDelete('cascade');
+            $table->foreign('id_ormawa')->references('id_ormawa')->on('ormawas');
         });
     }
 

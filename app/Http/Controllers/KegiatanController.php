@@ -6,6 +6,7 @@ use App\Models\Kegiatan;
 use App\Models\Ormawa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Http\Response as HttpResponse;
 
 
@@ -24,6 +25,10 @@ class KegiatanController extends Controller
             return [
                     'id' => $kegiatan->id_kegiatan,
                    'nama_kegiatan' => $kegiatan->nama_kegiatan,
+                   'diskripsi_kegiatan' => $kegiatan->diskripsi_kegiatan,
+                   'gambar_kegiatan' => $kegiatan->gambar_kegiatan,
+                   'tgl_kegiatan' => $kegiatan->tgl_kegiatan,
+                   'jam_kegiatan' => $kegiatan-> jam_kegiatan,
 
             ];
         });
@@ -71,12 +76,13 @@ class KegiatanController extends Controller
             return $this-> responseError("",$message);
         }
 
-           $name = $request->file('gambar_kegiatan')->getClientOriginalName();
+        $filename = Str::lower(
+            pathinfo($request->file('gambar_kegiatan')->getClientOriginalName(), PATHINFO_FILENAME)
+            .'.'
+            .$request->file('gambar_kegiatan')->getClientOriginalExtension()
+        );
 
-           $image = $request->file('gambar_kegiatan')->store('/assets/images/categories');
-           $path = $request->file('gambar_kegiatan')->move(public_path('/assets/images/categories'),$name);
-
-
+        $request->file('gambar_kegiatan')->move(public_path('/assets/images/kegiatan'),$filename);
 
            $id_ormawa = Ormawa::where('id_ormawa',$request->id_ormawa)->first();
            if ($id_ormawa ==NULL){
@@ -91,7 +97,7 @@ class KegiatanController extends Controller
 
            $save = new Kegiatan;
            $save->nama_kegiatan = $request->nama_kegiatan;
-           $save->gambar_kegiatan = $image;
+           $save->gambar_kegiatan = $filename;
            $save->diskripsi_kegiatan = $request->diskripsi_kegiatan;
            $save->tgl_kegiatan = $request->tgl_kegiatan;
            $save->jam_kegiatan = $request->jam_kegiatan;
@@ -157,6 +163,7 @@ class KegiatanController extends Controller
             'message' => $message,
             'errors' => null,
             'data' => $data
+
         ], 201);
     }
 
@@ -178,7 +185,7 @@ class KegiatanController extends Controller
             return $this->responseError($kegiatan, $message);
 
         }else{
-            $message = "Data tidak ditemukan";
+            $message = "Data ditemukan";
             return $this->responseError($kegiatan, $message);
         }
     }
