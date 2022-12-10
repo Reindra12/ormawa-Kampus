@@ -14,13 +14,13 @@ class CreateDetailKegiatansTable extends Migration
     public function up()
     {
         Schema::create('detail_kegiatans', function (Blueprint $table) {
-            $table->integer('id_kegiatan_kegiatan', true)->autoIncrement();
+            $table->integer('id_detail_kegiatan')->autoIncrement();
             $table->integer('id_kegiatan'); // this is working
-            $table->foreign('id_kegiatan')->references('id_kegiatan')->on('kegiatans')->onDelete('cascade');
+            $table->foreign('id_kegiatan')->references('id_kegiatan')->on('kegiatans');
             $table->integer('id_mahasiswa') ; // this is working
-            $table->foreign('id_mahasiswa')->references('id_mahasiswa')->on('mahasiswas')->onDelete('cascade');
+            $table->foreign('id_mahasiswa')->references('id_mahasiswa')->on('mahasiswas');
             $table->integer('id_jenis_kegiatan') ; // this is working
-            $table->foreign('id_jenis_kegiatan')->references('id_jenis_kegiatan')->on('jenis_kegiatans')->onDelete('cascade');
+            $table->foreign('id_jenis_kegiatan')->references('id_jenis_kegiatan')->on('jenis_kegiatans');
 
         });
     }

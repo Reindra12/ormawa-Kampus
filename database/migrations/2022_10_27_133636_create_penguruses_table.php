@@ -17,7 +17,7 @@ class CreatePengurusesTable extends Migration
             $table->integer('id_pengurus')->autoIncrement();
             $table->string('nama_kabupaten');
             $table->integer('id_ormawa') ;
-            $table->foreign('id_ormawa')->references('id_ormawa')->on('ormawa')->onDelete('cascade');
+            $table->foreign('id_ormawa')->references('id_ormawa')->on('ormawas')->onDelete('cascade');
             $table->enum('status',['y','t']);
         });
     }

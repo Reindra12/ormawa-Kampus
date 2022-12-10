@@ -16,7 +16,7 @@ class CreateBerkasTable extends Migration
         Schema::create('berkas', function (Blueprint $table) {
             $table->integer('id_berkas')->autoIncrement();
             $table->string('nama_kabupaten');
-            $table->integer('id_detail_kegiatan') ;
+            $table->integer('id_detail_kegiatan');
             $table->foreign('id_detail_kegiatan')->references('id_detail_kegiatan')->on('detail_kegiatans')->onDelete('cascade');
             $table->enum('verifikasi',['m','t','s']);
         });

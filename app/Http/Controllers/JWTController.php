@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use Validator;
+// use Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class JWTController extends Controller
 {
@@ -127,7 +128,7 @@ class JWTController extends Controller
         return response()->json([
             // 'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+            'expires_in' => auth()->factory()->getTTL() * 1,
             'status' => true,
             'message' => 'OK!',
             'errors' => null,
@@ -136,10 +137,10 @@ class JWTController extends Controller
     }
 
     protected function respondIncorretRegister($messageError){
-        
+
         return response()->json([
             'status' => false,
-            'message' => '$messageError',
+            'message' => 'OK!',
             'errors' => $messageError[0],
             // 'errors' => 'Failed to process request'
         ],401);
@@ -147,10 +148,10 @@ class JWTController extends Controller
 
 
     protected function respondIncorret($messageError){
-        
+
         return response()->json([
             'status' => false,
-            'message' => '$messageError',
+            'message' => 'OK!',
             'errors' => $messageError,
             // 'errors' => 'Failed to process request'
         ],401);
