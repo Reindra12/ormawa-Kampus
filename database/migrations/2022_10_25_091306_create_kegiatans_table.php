@@ -16,7 +16,7 @@ class CreateKegiatansTable extends Migration
         Schema::create('kegiatans', function (Blueprint $table) {
             $table->integer('id_kegiatan', true)->autoIncrement();
             $table->string('nama_kegiatan');
-            $table->string('diskripsi_kegiatan');
+            $table->string('diskripsi_kegiatan', 10000);
             $table->string('gambar_kegiatan');
             $table->date('tgl_kegiatan');
             $table->timeTz('jam_kegiatan');

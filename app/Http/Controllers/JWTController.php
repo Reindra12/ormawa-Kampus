@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mahasiswa;
 use Auth;
 // use Validator;
 use App\Models\User;
@@ -29,8 +30,9 @@ class JWTController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|min:2|max:100',
-            'email' => 'required|string|email|max:100|unique:users',
+            'nama' => 'required|string|min:2|max:100',
+            'nim' => 'required|string|min:2|max:100',
+            'user' => 'required|string|email|max:100|unique:mahasiswas',
             'password' => 'required|string|confirmed|min:6',
         ]);
 
@@ -40,9 +42,11 @@ class JWTController extends Controller
             return $this-> respondIncorretRegister($messageError);
         }
 
-        $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
+        $user = Mahasiswa::create([
+                'id_mahasiswa' => $request->id_mahasiswa,
+                'nama' => $request->nama,
+                'user' => $request->user,
+                'nim' => $request->nim,
                 'password' => Hash::make($request->password)
             ]);
 
@@ -65,7 +69,7 @@ class JWTController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
+            'user' => 'required|email',
             'password' => 'required|string|min:6',
         ]);
 
@@ -127,8 +131,8 @@ class JWTController extends Controller
         $responsedata['token'] = $token;
         return response()->json([
             // 'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 1,
+            // 'token_type' => 'bearer',
+            // 'expires_in' => auth()->factory()->getTTL() * 1,
             'status' => true,
             'message' => 'OK!',
             'errors' => null,
