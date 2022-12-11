@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class HistoriPencarian extends Model
 {
     use HasFactory;
+    protected $fillable = ['judul', 'id_mahasiswa'];
+    public $timestamps = false;
 }

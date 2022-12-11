@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\HistoriPencarian;
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class HistoriPencarianController extends Controller
 {
@@ -14,9 +16,9 @@ class HistoriPencarianController extends Controller
      */
     public function index()
     {
-        $history = HistoriPencarian::orderBy('id','ASC')->get()->all();
+        $history = HistoriPencarian::orderBy('id','ASC')->get();
         $message = "List Histori Pencarian";
-        return $this->responseSuccess($message, $history);
+        return $this->responseSuccess($history, $message);
     }
 
     /**
@@ -37,7 +39,27 @@ class HistoriPencarianController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'judul' => 'required',
+            'id_mahasiswa'=> 'required'
+        ]);
+
+        if ($validator->fails()) {
+            $message = $validator->errors()->first();
+            return $this->responseError("",$message);
+        }
+        $id_mahasiswa = Mahasiswa::where('id_mahasiswa', $request->id_mahasiswa)->first();
+        if ($id_mahasiswa==NULL) {
+            $message = "Id Mahasiswa tidak ditemukan";
+            return $this->responseError("", $message);
+        };
+        $message ="Berhasil menambahkan histori pencarian";
+        $history = HistoriPencarian::create([
+            'judul'=> $request->judul,
+            'id_mahasiswa'=> $request->id_mahasiswa
+        ]);
+
+        return $this->responseSuccess($history, $message);
     }
 
     /**
@@ -97,8 +119,8 @@ class HistoriPencarianController extends Controller
     protected function responseError($data,$messageError){
         return response()->json([
             'status' => false,
-            'message' => $messageError,
-            'errors' => $data,
+            'message' => "Gagal menambahkan histori pencarian",
+            'errors' => $messageError,
             'data'=> $data
             // 'errors' => 'Failed to process request'
         ],401);

@@ -7,9 +7,11 @@ use App\Http\Controllers\MultipleUploadController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DetailJenisKegiatanController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\HistoriPencarianController;
 use App\Http\Controllers\JenisKegiatanController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\OrmawaController;
 
 /*
@@ -32,7 +34,11 @@ Route::group(['middleware' => 'api'], function($router) {
 
 });
 
+//historypencarian
+Route::resource('/historypencarian', HistoriPencarianController::class)->middleware('jwtmiddleware');
 
+//mahasiswa
+Route::resource('/mahasiswa', MahasiswaController::class)->middleware('jwtmiddleware');
 // kegiatan
 Route::resource('/kegiatan', KegiatanController::class)->middleware('jwtmiddleware');
 Route::resource('/jenis_kegiatan', JenisKegiatanController::class)->middleware('jwtmiddleware');
