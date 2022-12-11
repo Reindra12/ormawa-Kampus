@@ -68,9 +68,20 @@ class HistoriPencarianController extends Controller
      * @param  \App\Models\HistoriPencarian  $historiPencarian
      * @return \Illuminate\Http\Response
      */
-    public function show(HistoriPencarian $historiPencarian)
+    public function show($id_mahasiswa)
     {
-        //
+        // $id_mahasiswa = HistoriPencarian::find('id_mahasiswa',$id_mahasiswa);
+        $history = HistoriPencarian::where('id_mahasiswa',$id_mahasiswa)->first();
+        $order = HistoriPencarian::orderBy('id','DESC')->get();
+        if ($history==NULL) {
+            $message = "history pencarian berdasarkan id tidak ditemukan";
+            return $this->responseError("", $message);
+
+        };
+            $message = "List History pencarian berdasarkan Id Mahasiswa";
+            return $this->responseSuccess($order, $message);
+
+
     }
 
     /**
