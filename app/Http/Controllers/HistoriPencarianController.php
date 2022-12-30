@@ -41,7 +41,8 @@ class HistoriPencarianController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'judul' => 'required',
-            'id_mahasiswa'=> 'required'
+            'id_mahasiswa'=> 'required',
+            // 'waktu' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -74,8 +75,8 @@ class HistoriPencarianController extends Controller
         $history = HistoriPencarian::where('id_mahasiswa',$id_mahasiswa)->first();
         $order = HistoriPencarian::orderBy('id','DESC')->get();
         if ($history==NULL) {
-            $message = "history pencarian berdasarkan id tidak ditemukan";
-            return $this->responseError("", $message);
+            $message = "history pencarian kosong";
+            return $this->responseError($history, $message);
 
         };
             $message = "List History pencarian berdasarkan Id Mahasiswa";
@@ -130,7 +131,7 @@ class HistoriPencarianController extends Controller
     protected function responseError($data,$messageError){
         return response()->json([
             'status' => false,
-            'message' => "Gagal menambahkan histori pencarian",
+            'message' => $messageError,
             'errors' => $messageError,
             'data'=> $data
             // 'errors' => 'Failed to process request'
