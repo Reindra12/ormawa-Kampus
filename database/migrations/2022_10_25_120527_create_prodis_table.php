@@ -16,7 +16,7 @@ class CreateProdisTable extends Migration
         Schema::create('prodis', function (Blueprint $table) {
             $table->integer('id_prodi')->autoIncrement();
             $table->string('nama_prodi', 11);
-            $table->integer('id_fakultas') ; 
+            $table->integer('id_fakultas') ;
             $table->foreign('id_fakultas')->references('id_fakultas')->on('fakultas')->onDelete('cascade');
             $table->enum('status',['y', 't']);
         });

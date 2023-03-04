@@ -153,4 +153,46 @@ class JenisKegiatanController extends Controller
             // 'errors' => 'Failed to process request'
         ],401);
     }
+
+    public function sendNotif(Request $request)
+    {
+        $device_token = $request->token;
+        $SERVER_API_KEY = env('SERVER_API_KEY');
+
+        $data = [
+            'title' => 'Penugasan Baru',
+            'body' => 'Anda memiliki penugasan baru, segera cek aplikasi mobil penugasan!',
+            'content_available' => true,
+            'android_channel_id' => 'ch1',
+            'to' => $device_token, // for single device id
+            // 'sound' => 'notificationpomi.mp3',
+            'data' => [
+                'title' => 'Penugasan Baru',
+                'sound' => 'notificationpomi.mp3',
+                'body' => 'Anda memiliki penugasan baru, segera cek aplikasi mobil penugasan!'
+            ]
+        ];
+        $dataString = json_encode($data);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+
+        curl_close($ch);
+
+        return $response;
+        // return $SERVER_API_KEY;
+    }
 }

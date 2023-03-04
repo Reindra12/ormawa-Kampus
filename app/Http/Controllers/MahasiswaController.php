@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Response as HttpResponse;
 
 class MahasiswaController extends Controller
 {
@@ -68,9 +70,27 @@ class MahasiswaController extends Controller
      * @param  \App\Models\Mahasiswa  $mahasiswa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Mahasiswa $mahasiswa)
+    public function update(Request $request, $mhs)
     {
-        //
+        $mahasiswa =  Mahasiswa::find($mhs);
+        $fcmtoken = $request->fcm_token;
+        if ($mahasiswa == null) {
+            return response()->json([
+                'status' => true,
+                'message' => 'failed to update Transaction',
+                'error' => 'ID not found'
+            ], HttpResponse::HTTP_UNPROCESSABLE_ENTITY);
+        } else {
+            $mahasiswa->update(['fcm_token'=> $fcmtoken]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Transaction updated',
+                'error' => null,
+                'data' => $mahasiswa
+            ], HttpResponse::HTTP_OK);
+        }
+
     }
 
     /**

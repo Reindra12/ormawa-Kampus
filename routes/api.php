@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbsensiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JWTController;
@@ -36,9 +37,14 @@ Route::group(['middleware' => 'api'], function($router) {
 
 //historypencarian
 Route::resource('/historypencarian', HistoriPencarianController::class)->middleware('jwtmiddleware');
+//absen
+Route::resource('/absensi', AbsensiController::class);
+Route::post('/sendnotif', [JenisKegiatanController::class,'sendNotif']);
 
 //mahasiswa
 Route::resource('/mahasiswa', MahasiswaController::class)->middleware('jwtmiddleware');
+Route::post('/mahasiswa/{id}', [MahasiswaController::class,'update']);
+
 // kegiatan
 Route::resource('/kegiatan', KegiatanController::class)->middleware('jwtmiddleware');
 Route::resource('/jenis_kegiatan', JenisKegiatanController::class)->middleware('jwtmiddleware');
