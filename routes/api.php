@@ -16,6 +16,7 @@ use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\OrmawaController;
+use App\Http\Controllers\PelangganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,25 +28,24 @@ use App\Http\Controllers\OrmawaController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['middleware' => 'api'], function($router) {
+
+Route::group(['middleware' => 'api'], function ($router) {
     Route::post('/register', [JWTController::class, 'register']);
     Route::post('/login', [JWTController::class, 'login']);
     Route::post('/logout', [JWTController::class, 'logout']);
     Route::post('/refresh', [JWTController::class, 'refresh']);
     Route::post('/profile', [JWTController::class, 'profile']);
-
-
 });
 
 //historypencarian
 Route::resource('/historypencarian', HistoriPencarianController::class)->middleware('jwtmiddleware');
 //absen
 Route::resource('/absensi', AbsensiController::class);
-Route::post('/sendnotif', [JenisKegiatanController::class,'sendNotif']);
+Route::post('/sendnotif', [JenisKegiatanController::class, 'sendNotif']);
 
 //mahasiswa
 Route::resource('/mahasiswa', MahasiswaController::class)->middleware('jwtmiddleware');
-Route::post('/mahasiswa/{id}', [MahasiswaController::class,'update']);
+Route::post('/mahasiswa/{id}', [MahasiswaController::class, 'update']);
 
 //absen
 Route::resource('/absen', AbsenController::class)->middleware('jwtmiddleware');
@@ -55,13 +55,16 @@ Route::resource('/kegiatan', KegiatanController::class)->middleware('jwtmiddlewa
 Route::resource('/jenis_kegiatan', JenisKegiatanController::class)->middleware('jwtmiddleware');
 Route::resource('/ormawa', OrmawaController::class)->middleware('jwtmiddleware');
 Route::resource('/detail_jenis_kegiatan', DetailJenisKegiatanController::class)->middleware('jwtmiddleware');
-Route::get('/search/{nama}',[KegiatanController::class,'searchKegiatan']);
+Route::get('/search/{nama}', [KegiatanController::class, 'searchKegiatan']);
 Route::get('/kegiatanByIdJenis/{id}', [KegiatanController::class, 'kegiatanByIdJenisKegiatan']);
 
 
+//pelanggan
+Route::resource('/pelanggan', PelangganController::class)->middleware('jwtmiddleware');
+
 //detail kegiatan
 Route::resource('/detail_kegiatan', DetailKegiatanController::class)->middleware('jwtmiddleware');
-Route::post('/absenKegiatan', [DetailKegiatanController::class,'absenKegiatan']);
+Route::post('/absenKegiatan', [DetailKegiatanController::class, 'absenKegiatan']);
 
 // jurusan
 

@@ -20,7 +20,9 @@ class DatabaseSeeder extends Seeder
             JenisKegiatanSeeder::class,
             KegiatanSeeder::class,
             FakultasSeeder::class,
-            ProdiSeeder::class
+            ProdiSeeder::class,
+            PelangganSeeder::class,
+            TagihanSeeder::class
         ]);
     }
 }
