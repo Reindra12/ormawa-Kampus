@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class detail_kegiatan extends Model
 {
     use HasFactory;
+    public $timestamps = false;
+    protected $fillable = ['id_mahasiswa', 'id_kegiatan', 'status'];
 }

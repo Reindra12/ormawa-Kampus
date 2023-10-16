@@ -7,6 +7,8 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Response as HttpResponse;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class JenisKegiatanController extends Controller
 {
@@ -94,9 +96,39 @@ class JenisKegiatanController extends Controller
      * @param  \App\Models\JenisKegiatan  $jenisKegiatan
      * @return \Illuminate\Http\Response
      */
-    public function show(JenisKegiatan $jenisKegiatan)
+    public function show($id)
     {
-        //
+        $jeniskegiatan =  JenisKegiatan::join("kegiatans", 'kegiatans.id_jenis_kegiatan','=', 'jenis_kegaitans.id_jenis_kegiatan')
+            ->select(
+                "kegiatans.*",
+                // "kegiatans.id_kegiatan",
+                // "kegiatans.nama_kegiatan",
+                // "kegiatans.diskripsi_kegiatan",
+                // "kegiatans.gambar_kegiatan",
+                // "kegiatans.tgl_kegiatan",
+                // "kegiatans.jam_kegiatan",
+
+
+            )
+            ->where("jenis_kegiatans.id_jenis_kegiatan", $id)
+            ->first();
+
+        if ($jeniskegiatan == null) {
+            $response = [
+                'status' => true,
+                'message' => "empty",
+                'error' => "ID not found",
+            ];
+            return response()->json($response, HttpResponse::HTTP_UNPROCESSABLE_ENTITY);
+        } else {
+            $response = [
+                'status' => 'success',
+                'message' => 'Detail of Transaction resouce',
+                'error' => null,
+                'data' => $jeniskegiatan
+            ];
+            return response()->json($response, HttpResponse::HTTP_OK);
+        }
     }
 
     /**
@@ -156,7 +188,7 @@ class JenisKegiatanController extends Controller
 
     public function sendNotif(Request $request)
     {
-        $device_token = $request->token;
+        $topic = $request->topics;
         $SERVER_API_KEY = env('SERVER_API_KEY');
 
         $data = [
@@ -164,7 +196,8 @@ class JenisKegiatanController extends Controller
             'body' => 'Anda memiliki penugasan baru, segera cek aplikasi mobil penugasan!',
             'content_available' => true,
             'android_channel_id' => 'ch1',
-            'to' => $device_token, // for single device id
+            // 'to' => $device_token, // for single device id
+            'to' => '/topics/breakfast',
             // 'sound' => 'notificationpomi.mp3',
             'data' => [
                 'title' => 'Penugasan Baru',

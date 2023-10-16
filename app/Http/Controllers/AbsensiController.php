@@ -50,20 +50,6 @@ class AbsensiController extends Controller
             'id_prodi' => $request->input('id_prodi')
 
         ]);
-        // $validator = Validator::make($request->all(), [
-        //     'nama' => 'required',
-        //     'status'=> 'required',
-        //     'id_mahasiswa'=> 'required',
-        //     'id_kegiatan' => 'required',
-        //     'id_prodi' => 'required',
-        //     // 'id_ormawa' => 'required'
-
-        //    ]);
-
-        //    if ($validator->fails()) {
-        //     $message = $validator->errors()->first();
-        //     return $this-> responseError("",$message);
-        // }
 
 
         $id_mahasiswa = Mahasiswa::where('id_mahasiswa',$request->id_mahasiswa)->first();

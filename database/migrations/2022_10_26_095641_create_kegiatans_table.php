@@ -22,6 +22,8 @@ class CreateKegiatansTable extends Migration
             $table->timeTz('jam_kegiatan');
             $table->integer('id_ormawa');
             $table->foreign('id_ormawa')->references('id_ormawa')->on('ormawas');
+            $table->integer('id_jenis_kegiatan');
+            $table->foreign('id_jenis_kegiatan')->references('id_jenis_kegiatan')->on('jenis_kegiatans');
         });
     }
 

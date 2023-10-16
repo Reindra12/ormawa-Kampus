@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JenisKegiatan;
 use App\Models\Kegiatan;
 use App\Models\Ormawa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+// use BaconQrCode\Encoder\QrCode;
+use BaconQrCode\Renderer\Image\Png;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
+
 
 
 use function PHPUnit\Framework\isEmpty;
@@ -29,6 +37,7 @@ class KegiatanController extends Controller
                    'gambar_kegiatan' => $kegiatan->gambar_kegiatan,
                    'tgl_kegiatan' => $kegiatan->tgl_kegiatan,
                    'jam_kegiatan' => $kegiatan-> jam_kegiatan,
+                   'tempat' => $kegiatan->tempat
 
             ];
         });
@@ -67,7 +76,9 @@ class KegiatanController extends Controller
             'nama_kegiatan'=> 'required',
             'tgl_kegiatan' => 'required',
             'jam_kegiatan' => 'required',
-            'id_ormawa' => 'required'
+            'id_ormawa' => 'required',
+            'id_jenis_kegiatan'=>'required',
+            'tempat' => 'required'
 
            ]);
 
@@ -102,12 +113,25 @@ class KegiatanController extends Controller
            $save->tgl_kegiatan = $request->tgl_kegiatan;
            $save->jam_kegiatan = $request->jam_kegiatan;
            $save->id_ormawa = $request->id_ormawa;
-
-
+           $save->id_jenis_kegiatan = $request->id_jenis_kegiatan;
+           $save->qrcode = 'qrcode-'.$request->nama_kegiatan.'.png';
+           $save->tempat= $request->tempat;
+           $save->hari = $request->hari;
            $save->save();
 
-           $message = "Data berhasil ditambahkan";
-           return $this->responseSuccess($save, $message);
+
+        $stringIdKegiatan = strval($save->id_kegiatan);
+         $qrCode = QRCode::format('png')->size(400)->generate($stringIdKegiatan);
+
+           $filename = 'qrcode-' . $request->nama_kegiatan . '.png';
+           $path = public_path('/assets/images/kegiatan/qrcode/' . $filename);
+           file_put_contents($path, $qrCode);
+
+        if (!$save->id_kegiatan) {
+                return response('id kegiatan tidak ditemukan', 400);
+            }
+           return $this->responseSuccess($save, "Data berhasil ditambahkan");
+
 
     }
 
@@ -117,9 +141,25 @@ class KegiatanController extends Controller
      * @param  \App\Models\Kegiatan  $kegiatan
      * @return \Illuminate\Http\Response
      */
-    public function show(Kegiatan $kegiatan)
+    public function show($id)
     {
-        //
+        try {
+            $kegiatan = Kegiatan::findOrFail($id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Detail Data Kegiatan',
+                'error' => null,
+                'data' => $kegiatan
+            ], Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Server Sedang Error',
+                'error' => $th->getMessage(),
+                'data' => null
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -189,4 +229,14 @@ class KegiatanController extends Controller
             return $this->responseError($kegiatan, $message);
         }
     }
+
+    public function kegiatanByIdJenisKegiatan($id){
+        $kegiatan = Kegiatan::where('id_jenis_kegiatan',$id)->get();
+        return response()->json([
+            'status' => true,
+            'message' => 'OK!',
+            'errors' => null,
+            'data' => $kegiatan,
+        ]);
+}
 }

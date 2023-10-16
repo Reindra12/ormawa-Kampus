@@ -15,8 +15,8 @@ class CreateMahasiswasTable extends Migration
     {
         Schema::create('mahasiswas', function (Blueprint $table) {
             $table->integer('id_mahasiswa')->autoIncrement();
-            $table->string('nim', 11);
-            $table->string('nama', 45);
+            $table->string('nim', 11)->nullable();
+            $table->string('nama', 45)->nullable();
             $table->enum('jenkel', ['l', 'p']);
             $table->integer('id_kabupaten')->nullable();
             $table->foreign('id_kabupaten')->references('id_kabupaten')->on('kabupatens')->onDelete('cascade');
@@ -32,10 +32,11 @@ class CreateMahasiswasTable extends Migration
             $table->year('tahun_masuk')->nullable();
             $table->enum('ospek', ['y','t']);
             $table->year('tahun_ospek')->nullable();
-            $table->string('user', 250);
-            $table->string('password', 250);
+            $table->string('user', 250)->nullable();
+            $table->string('password', 250)->nullable();
             $table->rememberToken();
             $table->enum('status', ['y','t']);
+            $table->string('fcm_token')->nullable();
         });
     }
 

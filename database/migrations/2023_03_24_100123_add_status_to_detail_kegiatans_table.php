@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFcmTokenToMahasiswasTable extends Migration
+class AddStatusToDetailKegiatansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddFcmTokenToMahasiswasTable extends Migration
      */
     public function up()
     {
-        Schema::table('mahasiswas', function (Blueprint $table) {
-            $table->string('fcm_token');
-            //
+        Schema::table('detail_kegiatans', function (Blueprint $table) {
+            $table->string('status');
         });
     }
 
@@ -26,8 +25,8 @@ class AddFcmTokenToMahasiswasTable extends Migration
      */
     public function down()
     {
-        Schema::table('mahasiswas', function (Blueprint $table) {
-            $table->dropColumn('fcm_token');
+        Schema::table('detail_kegiatans', function (Blueprint $table) {
+            $table->dropColumn('status');
         });
     }
 }

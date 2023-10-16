@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAbsensisTable extends Migration
+class CreateAbsensTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,16 @@ class CreateAbsensisTable extends Migration
      */
     public function up()
     {
-        Schema::create('absensis', function (Blueprint $table) {
-            $table->integer('id_absensi', true)->autoIncrement();
-            $table->string('nama');
-            $table->string('status');
-            $table->binary('qrcode_image')->nullable();
+        Schema::create('absens', function (Blueprint $table) {
+            $table->integer('id_absen', true)->autoIncrement();
+            $table->enum('status', ['H', 'T']);
             $table->integer('id_mahasiswa');
             $table->foreign('id_mahasiswa')->references('id_mahasiswa')->on('mahasiswas');
             $table->integer('id_kegiatan');
             $table->foreign('id_kegiatan')->references('id_kegiatan')->on('kegiatans');
-            $table->integer('id_prodi');
-            $table->foreign('id_prodi')->references('id_prodi')->on('prodis');
         });
+
+        // Schema::rename('absen_models', 'absens');
     }
 
     /**
@@ -34,6 +32,6 @@ class CreateAbsensisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('absensis');
+        Schema::dropIfExists('absens');
     }
 }
